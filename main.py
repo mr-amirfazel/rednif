@@ -5,6 +5,7 @@ from hazm import stopwords_list, WordTokenizer
 from PositionalInvertedIndex.pii import PII
 from PositionalInvertedIndex.term import Term
 from Preprocess.preprocess import Preprocessor
+from utils.store import Storage
 
 
 def test_preprop():
@@ -57,5 +58,7 @@ if __name__ == "__main__":
     #     count +=1
     # print(count)
     # print(stopwords_list())
+    store = Storage()
+    store.set("docs_size", 2)
     test_preprop()
 
