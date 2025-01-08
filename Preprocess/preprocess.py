@@ -6,6 +6,8 @@ from Preprocess.normalize import Normalizer
 
 from collections import Counter
 
+from utils.logger import log
+
 
 class Preprocessor:
     def __init__(self, contents: list[str]):
@@ -13,6 +15,7 @@ class Preprocessor:
         self.tokenizer = Tokenizer()
         self.normalizer = Normalizer()
         self.__stop_words = [stopwords_list()[i] for i in range(0, len(stopwords_list()) - 1)]
+        self.log_condition = False
 
     def set_contents(self, contents):
         self.__contents = contents
@@ -32,34 +35,34 @@ class Preprocessor:
         return filtered_doc_tokens
 
     def __normalize(self, text):
-        print("============ Normalization Begin ============"if False else '')
+        log("============ Normalization Begin ============", self.log_condition)
         result = self.normalizer.apply(text)
-        print("============ Normalization Result ============")
-        print(result)
-        print("============ Normalization End ============", end="\n\n")
+        log("============ Normalization Result ============", self.log_condition)
+        log(result, self.log_condition)
+        log("============ Normalization End ============", True)
         return result
 
     def __stem_tokens(self, tokens: list[str], blacklist: list[str] = []):
-        print("============ Stemming Begin ============")
+        log("============ Stemming Begin ============", self.log_condition)
         result = [Stemmer.apply(token) if token not in blacklist else token for token in tokens]
-        print("============ Stemming Result ============" if False else '')
-        print(result)
-        print("============ Stemming End ============", end="\n\n")
+        log("============ Stemming Result ============" , self.log_condition)
+        log(result, self.log_condition)
+        log("============ Stemming End ============",  True)
         return result
 
     def __tokenize(self, content: str):
-        print("============ Tokenization Begin ============")
+        log("============ Tokenization Begin ============", self.log_condition)
         result = self.tokenizer.apply(content)
-        print("============ Tokenization Result ============")
-        print(result)
-        print("============ Tokenization End ============", end="\n\n")
+        log("============ Tokenization Result ============", self.log_condition)
+        log(result, self.log_condition)
+        log("============ Tokenization End ============", True)
         return result
 
     def __remove_frequents(self, all_tokens: list[str], doc_tokens: list[list[str]]):
-        print("============ Removing Frequent Words ... ============")
+        log("============ Removing Frequent Words ... ============", self.log_condition)
         top_n = 14
         top_frequent_words = self.__find_frequent_words(all_tokens, top_n)
-        print(f"Top {top_n} Frequent Words: {top_frequent_words}")
+        log(f"Top {top_n} Frequent Words: {top_frequent_words}", self.log_condition)
         black_list = list(self.__stop_words)
         black_list.extend(list(top_frequent_words))
         cleansed_doc_tokens = []
@@ -72,7 +75,8 @@ class Preprocessor:
         return cleansed_doc_tokens
 
     def __find_frequent_words(self, all_tokens: list[str], top_n=50):
-        print("============ Removing Frequent Words Begin ============")
+        log("============ Removing Frequent Words Begin ============", self.log_condition)
         word_counts = Counter(all_tokens)
+        log("============ Removing Frequent Words End ============", True)
 
         return set([word for word, _ in word_counts.most_common(top_n)])
