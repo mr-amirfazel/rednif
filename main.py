@@ -2,11 +2,49 @@ import Preprocess.normalize
 import utils.file
 from hazm import stopwords_list, WordTokenizer
 
-def test_normalize():
+from PositionalInvertedIndex.pii import PII
+from PositionalInvertedIndex.term import Term
+from Preprocess.preprocess import Preprocessor
+
+
+def test_preprop():
     test_text = """
-        این یک پیام می باشد. این پیامها زشتند. 123 سالِ پیشّ هوا سرد نمیتونم برم بَیرون. ! ای بابا # چرا ، نمیشه کاری کَرد
+      کتابها
+      کتابهایی
+      کتابی
+      کتابهای
+      بزرگتر
+      بزرگترین
+      کتاب        اش
+      کتاب    ات
+      خسته    ام
+      بسته     ای
+      میخواهم
+      نمیتوانم
+      کوزه گر
+      شیشه    گری
+      کتابهایی که میخوانم گر زیبا باشد اما کتابهایم هنوز نیستند.
+        شما هم کتابهایتان را بردارید و ببرید
+        این یکی پر ! . علامت # $ % ^ & * ) ( ملامت @
+        amirfazel@gmail.com
+        می خواهم بروم
+        فروشنده
+        کلیله
+        دمنه
+        فرانسه
+        قسطنتنیه
+        اسنیکرز
+        فرهاد
+        سجاد
+        هاشم
+        گیتی پسند اصفهان
+        در جام جهانی فوتبال
     """
-    test_text = Preprocess.normalize.hazm_normalizer(test_text)
+    p = Preprocessor([test_text, test_text])
+    preprocdocs = p.apply()
+    index = PII(preprocdocs).get_index()
+    term: Term = index['فرهاد']
+    print(term.get_postings())
 
 
 
@@ -19,5 +57,5 @@ if __name__ == "__main__":
     #     count +=1
     # print(count)
     # print(stopwords_list())
-    test_normalize()
+    test_preprop()
 

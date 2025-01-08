@@ -6,6 +6,7 @@ from Preprocess.normalize import Normalizer
 
 from collections import Counter
 
+
 class Preprocessor:
     def __init__(self, contents: list[str]):
         self.__contents = contents
@@ -27,12 +28,10 @@ class Preprocessor:
             all_tokens.extend(pre_stemmed_tokens)
 
         doc_tokens = self.__remove_frequents(all_tokens, doc_tokens)
-        print(doc_tokens)
-
-
+        return doc_tokens
 
     def __normalize(self, text):
-        print("============ Normalization Begin ============")
+        print("============ Normalization Begin ============"if False else '')
         result = self.normalizer.apply(text)
         print("============ Normalization Result ============")
         print(result)
@@ -42,7 +41,7 @@ class Preprocessor:
     def __stem_tokens(self, tokens: list[str], blacklist: list[str] = []):
         print("============ Stemming Begin ============")
         result = [Stemmer.apply(token) if token not in blacklist else token for token in tokens]
-        print("============ Stemming Result ============")
+        print("============ Stemming Result ============" if False else '')
         print(result)
         print("============ Stemming End ============", end="\n\n")
         return result
@@ -71,11 +70,8 @@ class Preprocessor:
             cleansed_doc_tokens.append(new_tokens)
         return cleansed_doc_tokens
 
-
-
     def __find_frequent_words(self, all_tokens: list[str], top_n=50):
         print("============ Removing Frequent Words Begin ============")
         word_counts = Counter(all_tokens)
 
         return set([word for word, _ in word_counts.most_common(top_n)])
-
