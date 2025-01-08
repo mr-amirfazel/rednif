@@ -8,6 +8,7 @@ class Term:
         self.__frequency_in_doc: Dict[str, int] = {}
         self.__total_frequency = 0
         self.__champions_list = []
+        self.__weight_per_doc: Dict[str, float] = {}
 
     def add_posting(self, doc_id, position):
         if doc_id not in self.__positions_in_doc:
@@ -32,8 +33,11 @@ class Term:
     def get_word(self):
         return self.__word
 
-    def get_freq_in_doc(self):
-        return self.__frequency_in_doc
+    def get_freq_in_doc(self, doc_id):
+        if doc_id in self.__frequency_in_doc:
+            return self.__frequency_in_doc[doc_id]
+        else:
+            return 0
 
     def get_total_frequency(self):
         return self.__total_frequency
