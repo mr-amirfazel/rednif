@@ -28,7 +28,9 @@ class Preprocessor:
             all_tokens.extend(pre_stemmed_tokens)
 
         doc_tokens = self.__remove_frequents(all_tokens, doc_tokens)
-        return doc_tokens
+        filtered_doc_tokens = [[token for token in tokens if token] for tokens in doc_tokens]
+        print(filtered_doc_tokens[0])
+        return filtered_doc_tokens
 
     def __normalize(self, text):
         print("============ Normalization Begin ============"if False else '')
