@@ -14,7 +14,7 @@ def calculate_tf_query(term: str, query_tokens: list[str]):
         if token == term:
             tf += 1
     if tf > 0:
-        (1 + math.log10(tf))
+        return (1 + math.log10(tf))
     else:
         return 0
 

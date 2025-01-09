@@ -41,17 +41,30 @@ def test_preprop():
         گیتی پسند اصفهان
         در جام جهانی فوتبال
     """
-    TOP_K = 10
+    TOP_K = 20
     news_dataset = utils.file.json_reader("./dataset/IR_data_news_12k.json");
-    contents = [doc["content"] for doc in news_dataset.values()]
-    p = Preprocessor(contents)
+    print(list(list(news_dataset.values())[0].values())[0])
+    print(list(list(news_dataset.values())[0].values())[4])
+    contents = [doc["content"] for doc in list(news_dataset.values())[:500]]
+    ds = contents[:160]
+    p = Preprocessor(ds)
     preprocdocs = p.apply()
     index, collection_size = PII(preprocdocs, TOP_K).get_index()
-    qp = Queryprocess.queryprocess.QueryProcessor(index, collection_size)
-    qp.apply("فوتبال")
-    qp.print_results(news_dataset, 10)
+    qp = Queryprocess.queryprocess.QueryProcessor(news_dataset, index, collection_size)
+    scores = qp.apply("تیم ملی")
+    qp.print_results(scores, 10)
 
+def pre_processing_phase():
+    pass
 
+def indexing_phase():
+    pass
+
+def query_processing_phase():
+    pass
+
+def execute():
+    pass
 
 if __name__ == "__main__":
 
@@ -62,5 +75,6 @@ if __name__ == "__main__":
     # print(stopwords_list())
     # store = Storage()
     # store.set("docs_size", 2)
-    test_preprop()
+    # test_preprop()
+    execute()
 

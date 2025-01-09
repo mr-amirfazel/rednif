@@ -23,7 +23,8 @@ class Preprocessor:
     def apply(self, is_query: bool = False):
         doc_tokens = []
         all_tokens = []
-        for content in self.__contents:
+        for index, content in enumerate(self.__contents):
+            log(f"===> Preprocessing document #{index+1}", True)
             normalized_content = self.__normalize(content)
             tokens = self.__tokenize(normalized_content)
             pre_stemmed_tokens = self.__stem_tokens(tokens, self.__stop_words)
@@ -39,7 +40,7 @@ class Preprocessor:
         result = self.normalizer.apply(text)
         log("============ Normalization Result ============", self.log_condition)
         log(result, self.log_condition)
-        log("============ Normalization End ============", True)
+        log("============ Normalization End ============", self.log_condition)
         return result
 
     def __stem_tokens(self, tokens: list[str], blacklist: list[str] = []):
@@ -47,7 +48,7 @@ class Preprocessor:
         result = [Stemmer.apply(token) if token not in blacklist else token for token in tokens]
         log("============ Stemming Result ============" , self.log_condition)
         log(result, self.log_condition)
-        log("============ Stemming End ============",  True)
+        log("============ Stemming End ============",  self.log_condition)
         return result
 
     def __tokenize(self, content: str):
@@ -55,15 +56,14 @@ class Preprocessor:
         result = self.tokenizer.apply(content)
         log("============ Tokenization Result ============", self.log_condition)
         log(result, self.log_condition)
-        log("============ Tokenization End ============", True)
+        log("============ Tokenization End ============", self.log_condition)
         return result
 
     def __remove_frequents(self, all_tokens: list[str], doc_tokens: list[list[str]], is_query: bool):
         log("============ Removing Frequent Words ... ============", self.log_condition)
         black_list = list(self.__stop_words)
         if not is_query:
-            # TODO: change this value to 50
-            top_n = 14
+            top_n = 50
             top_frequent_words = self.__find_frequent_words(all_tokens, top_n)
             log(f"Top {top_n} Frequent Words: {top_frequent_words}", self.log_condition)
             black_list.extend(list(top_frequent_words))
@@ -79,6 +79,6 @@ class Preprocessor:
     def __find_frequent_words(self, all_tokens: list[str], top_n=50):
         log("============ Removing Frequent Words Begin ============", self.log_condition)
         word_counts = Counter(all_tokens)
-        log("============ Removing Frequent Words End ============", True)
+        log("============ Removing Frequent Words End ============", False)
 
         return set([word for word, _ in word_counts.most_common(top_n)])
