@@ -5,7 +5,6 @@ from hazm import stopwords_list, WordTokenizer
 from PositionalInvertedIndex.pii import PII
 from PositionalInvertedIndex.term import Term
 from Preprocess.preprocess import Preprocessor
-from utils.store import Storage
 
 
 def test_preprop():
@@ -41,9 +40,10 @@ def test_preprop():
         گیتی پسند اصفهان
         در جام جهانی فوتبال
     """
+    TOP_K = 10
     p = Preprocessor([test_text, test_text])
     preprocdocs = p.apply()
-    index = PII(preprocdocs).get_index()
+    index, collection_size = PII(preprocdocs, TOP_K).get_index()
     term: Term = index['فرهاد']
     print(term.get_postings())
 
@@ -58,7 +58,7 @@ if __name__ == "__main__":
     #     count +=1
     # print(count)
     # print(stopwords_list())
-    store = Storage()
-    store.set("docs_size", 2)
+    # store = Storage()
+    # store.set("docs_size", 2)
     test_preprop()
 

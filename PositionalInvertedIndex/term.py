@@ -1,6 +1,5 @@
 from typing import Dict, List
 
-from utils.store import Storage
 from utils.tfidf import compute_tf_idf
 
 
@@ -12,7 +11,6 @@ class Term:
         self.__total_frequency = 0
         self.__champions_list = []
         self.__weight_per_doc: Dict[str, float] = {}
-        self.__storage = Storage()
 
     def add_posting(self, doc_id, position):
         if doc_id not in self.__positions_in_doc:
