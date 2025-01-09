@@ -45,7 +45,8 @@ def test_preprop():
     preprocdocs = p.apply()
     index, collection_size = PII(preprocdocs, TOP_K).get_index()
     term: Term = index['فرهاد']
-    print(term.get_postings())
+    for term, term_obj in index.items():
+        print(term, term_obj.get_champs())
 
 
 

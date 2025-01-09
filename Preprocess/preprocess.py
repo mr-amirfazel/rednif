@@ -20,7 +20,7 @@ class Preprocessor:
     def set_contents(self, contents):
         self.__contents = contents
 
-    def apply(self):
+    def apply(self, is_query: bool = False):
         doc_tokens = []
         all_tokens = []
         for content in self.__contents:
@@ -30,7 +30,7 @@ class Preprocessor:
             doc_tokens.append(pre_stemmed_tokens)
             all_tokens.extend(pre_stemmed_tokens)
 
-        doc_tokens = self.__remove_frequents(all_tokens, doc_tokens)
+        doc_tokens = self.__remove_frequents(all_tokens, doc_tokens, is_query)
         filtered_doc_tokens = [[token for token in tokens if token] for tokens in doc_tokens]
         return filtered_doc_tokens
 
@@ -58,13 +58,15 @@ class Preprocessor:
         log("============ Tokenization End ============", True)
         return result
 
-    def __remove_frequents(self, all_tokens: list[str], doc_tokens: list[list[str]]):
+    def __remove_frequents(self, all_tokens: list[str], doc_tokens: list[list[str]], is_query: bool):
         log("============ Removing Frequent Words ... ============", self.log_condition)
-        top_n = 14
-        top_frequent_words = self.__find_frequent_words(all_tokens, top_n)
-        log(f"Top {top_n} Frequent Words: {top_frequent_words}", self.log_condition)
         black_list = list(self.__stop_words)
-        black_list.extend(list(top_frequent_words))
+        if not is_query:
+            # TODO: change this value to 50
+            top_n = 14
+            top_frequent_words = self.__find_frequent_words(all_tokens, top_n)
+            log(f"Top {top_n} Frequent Words: {top_frequent_words}", self.log_condition)
+            black_list.extend(list(top_frequent_words))
         cleansed_doc_tokens = []
         for tokens in doc_tokens:
             new_tokens = []
