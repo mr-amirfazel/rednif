@@ -54,8 +54,8 @@ class Term:
     def compute_weight_per_doc(self, doc_id, docs_size):
         self.__weight_per_doc[doc_id] = compute_tf_idf(self, doc_id, docs_size)
 
-    def get_weight_per_doc(self, doc_id):
-        return self.__weight_per_doc[doc_id]
+    def get_weight_per_doc(self):
+        return self.__weight_per_doc
 
     def __repr__(self):
         return f"Term(word={self.__word}, champion_list={self.__champions_list})"

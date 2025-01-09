@@ -10,7 +10,7 @@ from utils.logger import log
 
 
 class Preprocessor:
-    def __init__(self, contents: list[str]):
+    def __init__(self, contents: list[str] = []):
         self.__contents = contents
         self.tokenizer = Tokenizer()
         self.normalizer = Normalizer()

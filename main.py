@@ -1,4 +1,5 @@
 import Preprocess.normalize
+import Queryprocess.queryprocess
 import utils.file
 from hazm import stopwords_list, WordTokenizer
 
@@ -41,19 +42,19 @@ def test_preprop():
         در جام جهانی فوتبال
     """
     TOP_K = 10
-    p = Preprocessor([test_text, test_text])
+    news_dataset = utils.file.json_reader("./dataset/IR_data_news_12k.json");
+    contents = [doc["content"] for doc in news_dataset.values()]
+    p = Preprocessor(contents)
     preprocdocs = p.apply()
     index, collection_size = PII(preprocdocs, TOP_K).get_index()
-    term: Term = index['فرهاد']
-    for term, term_obj in index.items():
-        print(term, term_obj.get_champs())
+    qp = Queryprocess.queryprocess.QueryProcessor(index, collection_size)
+    qp.apply("فوتبال")
+    qp.print_results(news_dataset, 10)
 
 
 
 if __name__ == "__main__":
-    # input_data = utils.file.json_reader("./dataset/IR_data_news_12k.json");
-    # for doc in list(input_data.values())[0:10]:
-    #     print(doc["content"])
+
     # count = 0
     # for doc in list(input_data.values()):
     #     count +=1
