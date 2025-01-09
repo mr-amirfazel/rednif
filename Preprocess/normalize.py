@@ -22,6 +22,7 @@ class Normalizer:
             "ت.ش.": "تحقیق شده",
             "م.ه.": "محل همایش"
         }
+        self.__normalizer = HNormalizer()
 
     def apply(self, text):
         if text is not None:
@@ -34,16 +35,15 @@ class Normalizer:
             raise Exception("No content entered.")
 
     def __hazm_normalize(self, text):
-        normalizer = HNormalizer()
-        text = normalizer.normalize(text)
-        text = normalizer.correct_spacing(text)
-        text = normalizer.remove_diacritics(text)
-        text = normalizer.remove_specials_chars(text)
-        text = normalizer.decrease_repeated_chars(text)
-        text = normalizer.persian_style(text)
-        text = normalizer.persian_number(text)
-        text = normalizer.unicodes_replacement(text)
-        text = normalizer.seperate_mi(text)
+        text = self.__normalizer.normalize(text)
+        text = self.__normalizer.correct_spacing(text)
+        text = self.__normalizer.remove_diacritics(text)
+        text = self.__normalizer.remove_specials_chars(text)
+        text = self.__normalizer.decrease_repeated_chars(text)
+        text = self.__normalizer.persian_style(text)
+        text = self.__normalizer.persian_number(text)
+        text = self.__normalizer.unicodes_replacement(text)
+        text = self.__normalizer.seperate_mi(text)
         return text
 
     def __correct_spacing(self, text):

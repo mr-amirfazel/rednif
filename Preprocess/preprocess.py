@@ -16,6 +16,7 @@ class Preprocessor:
         self.normalizer = Normalizer()
         self.__stop_words = [stopwords_list()[i] for i in range(0, len(stopwords_list()) - 1)]
         self.log_condition = False
+        self.__stemmer = Stemmer()
 
     def set_contents(self, contents):
         self.__contents = contents
@@ -45,7 +46,7 @@ class Preprocessor:
 
     def __stem_tokens(self, tokens: list[str], blacklist: list[str] = []):
         log("============ Stemming Begin ============", self.log_condition)
-        result = [Stemmer.apply(token) if token not in blacklist else token for token in tokens]
+        result = [self.__stemmer.apply(token) if token not in blacklist else token for token in tokens]
         log("============ Stemming Result ============" , self.log_condition)
         log(result, self.log_condition)
         log("============ Stemming End ============",  self.log_condition)
