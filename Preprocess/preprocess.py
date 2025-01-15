@@ -25,7 +25,7 @@ class Preprocessor:
         doc_tokens = []
         all_tokens = []
         for index, content in enumerate(self.__contents):
-            log(f"===> Preprocessing document #{index+1}", True)
+            log(f"===> Preprocessing document #{index+1}", True and not is_query)
             normalized_content = self.__normalize(content)
             tokens = self.__tokenize(normalized_content)
             pre_stemmed_tokens = self.__stem_tokens(tokens, self.__stop_words)
@@ -63,6 +63,7 @@ class Preprocessor:
     def __remove_frequents(self, all_tokens: list[str], doc_tokens: list[list[str]], is_query: bool):
         log("============ Removing Frequent Words ... ============", self.log_condition)
         black_list = list(self.__stop_words)
+
         if not is_query:
             top_n = 50
             top_frequent_words = self.__find_frequent_words(all_tokens, top_n)
@@ -82,4 +83,9 @@ class Preprocessor:
         word_counts = Counter(all_tokens)
         log("============ Removing Frequent Words End ============", False)
 
+        log(f"Top {top_n} frequent words to be removed along their count:\n", True)
+        for word, count in word_counts.most_common(top_n):
+            log(f"{word} : {count}", True)
+
         return set([word for word, _ in word_counts.most_common(top_n)])
+

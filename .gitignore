@@ -1,2 +1,5 @@
 /.idea
 /dataset
+*.zip
+*.docx
+*.pdf
